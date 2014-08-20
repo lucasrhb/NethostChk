@@ -38,7 +38,7 @@ echo "Generating current network hosts log:"
 	x=`cat $temp/$arpbefore | grep "Nmap done:" | gawk -F"(" '{print $2}' | gawk -F")" '{print $1}'`
 echo "$x, now go and connect another host to the same lan"
 
-	read -p "Wait 10 seconds and press any key" -n1 -s
+	read -p "Wait about 3 to 5 seconds and press any key" -n1 -s
 	echo -e "\n\n"
 	nmap -sP "$1" > $temp/$arpafter
 	y=`cat $temp/$arpafter | grep "Nmap done:" | gawk -F"(" '{print $2}' | gawk -F")" '{print $1}'`
