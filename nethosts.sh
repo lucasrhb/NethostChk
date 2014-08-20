@@ -62,7 +62,7 @@ sdiff $temp/$arpbefore $temp/$arpafter > $temp/$compared
 	echo
 
 	cat $temp/$compared
-	#grep " >" $temp/$compared | tr -d '	' | sed 's/^ *//'
+	grep " >" $temp/$compared | tr -d '	' | sed 's/^ *//'
 fi
 
 
