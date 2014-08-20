@@ -1,8 +1,7 @@
 # Check new hosts in a network
-# Author: Lucas Ludziejewski
+Author: Lucas Ludziejewski
 
 NethostChk v0.1
-
 
 Make sure you have nmap installed in your system.
 If there is no nmap there, use your favourite install method to install it.
