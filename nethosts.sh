@@ -15,26 +15,38 @@ arpafter=`uuidgen`
 compared=`uuidgen`
 
 
-
 echo -e "\nNethostChk v0.1"
-echo "Yet Another Simple Arp Based Script to Check New Hosts in Network"
+echo "Yet Another Simple Nmap Based Script to Check New Hosts in Network"
 echo "####################################################################"
 echo
+
+
+if [ $# -eq 0 ]
+	then
+	echo -e "\nERROR: No arguments supplied\n"
+	echo "Run scripts with argument (network ip/class)"
+	echo -e "For example: $0 192.168.1.0/24\n\n"
+	
+	exit 0;
+fi
+
+
+
+
 echo "Generating current network hosts log:"
-	arp -a > $temp/$arpbefore
-	x=`wc -l $temp/$arpbefore | gawk -F"$temp" '{print $1}'`
-echo "$x hosts found, now go and connect another host to the same lan"
+	nmap -sP "$1" > $temp/$arpbefore
+	x=`cat $temp/$arpbefore | grep "Nmap done:" | gawk -F"(" '{print $2}' | gawk -F")" '{print $1}'`
+echo "$x, now go and connect another host to the same lan"
 
 	read -p "Wait 10 seconds and press any key" -n1 -s
 	echo -e "\n\n"
-	arp -a > $temp/$arpafter
-	y=`wc -l $temp/$arpafter | gawk -F"$temp" '{print $1}'`
+	nmap -sP "$1" > $temp/$arpafter
+	y=`cat $temp/$arpafter | grep "Nmap done:" | gawk -F"(" '{print $2}' | gawk -F")" '{print $1}'`
+
+echo "$y now connected"
 
 
-echo "$y hosts now connected"
-
-
-if [ $x = $y ]
+if [ "$x" = "$y" ]
 then
 
 	echo "No new hosts detected"
@@ -49,7 +61,8 @@ echo "List of new hosts: "
 sdiff $temp/$arpbefore $temp/$arpafter > $temp/$compared
 	echo
 
-	grep " >" $temp/$compared | tr -d '	' | sed 's/^ *//'
+	cat $temp/$compared
+	#grep " >" $temp/$compared | tr -d '	' | sed 's/^ *//'
 fi
 
 
